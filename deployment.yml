@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trustpoint-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trustpoint-server
+  template:
+    metadata:
+      labels:
+        app: trustpoint-server
+    spec:
+      containers:
+        - name: trustpoint-server
+          image: your-dockerhub-username/trustpoint-server:latest
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: sqlite-storage
+              mountPath: /app
+      volumes:
+        - name: sqlite-storage
+          persistentVolumeClaim:
+            claimName: sqlite-pvc
